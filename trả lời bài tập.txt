@@ -1,0 +1,9 @@
+proxy_pass http://localhost:3001;
+
+cho Nginx biết địa chỉ máy chủ phía sau mà nó cần chuyển tiếp request đến.
+- http://: sử dụng giao thức HTTP.
+- localhost: máy chủ đang chạy Nginx.
+- 3001: cổng mà ứng dụng Spring Boot hoặc React đang lắng nghe.
+
+Ứng dụng ở cổng 3000 bị sập thì Nginx trả về HTTP code: HTTP 502 Bad Gateway
+Nguyên nhân là Nginx vẫn hoạt động và nhận request, nhưng ứng dụng tại localhost:3000 đã dừng hoặc không phản hồi kết nối hợp lệ.
