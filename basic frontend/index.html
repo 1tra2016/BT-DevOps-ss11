@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Frontend</title>
+</head>
+<body>
+  <h1>Quản lý Bác sĩ</h1>
+
+  <!-- Form tạo bác sĩ -->
+  <h2>Đăng ký bác sĩ mới</h2>
+  <form id="doctorForm">
+    <label>Tên: <input type="text" id="name" required></label><br>
+    <label>Chuyên khoa: <input type="text" id="specialization" required></label><br>
+    <label>Kinh nghiệm (năm): <input type="number" id="experienceYears" min="0" required></label><br>
+    <label>Email: <input type="email" id="email" required></label><br>
+    <button type="submit">Tạo bác sĩ</button>
+  </form>
+
+  <p id="createResult"></p>
+
+  <!-- Danh sách bác sĩ -->
+  <h2>Danh sách bác sĩ</h2>
+  <button onclick="loadDoctors()">Tải danh sách</button>
+  <ul id="doctorList"></ul>
+
+  <script>
+    const API_BASE = "/api/v1/doctors";
+
+    // Xử lý tạo bác sĩ
+    document.getElementById("doctorForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const doctor = {
+        name: document.getElementById("name").value,
+        specialization: document.getElementById("specialization").value,
+        experienceYears: parseInt(document.getElementById("experienceYears").value),
+        email: document.getElementById("email").value
+      };
+
+      try {
+        const res = await fetch(API_BASE, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(doctor)
+        });
+        const data = await res.json();
+        document.getElementById("createResult").innerText = data.message || "Tạo thành công!";
+      } catch (err) {
+        document.getElementById("createResult").innerText = "Lỗi khi tạo bác sĩ!";
+      }
+    });
+
+    // Tải danh sách bác sĩ
+    async function loadDoctors() {
+      try {
+        const res = await fetch(API_BASE);
+        const data = await res.json();
+        const list = document.getElementById("doctorList");
+        list.innerHTML = "";
+        data.data.forEach(doc => {
+          const li = document.createElement("li");
+          li.textContent = `${doc.id} - ${doc.name} (${doc.specialization})`;
+          list.appendChild(li);
+        });
+      } catch (err) {
+        alert("Lỗi khi tải danh sách bác sĩ!");
+      }
+    }
+  </script>
+</body>
+</html>

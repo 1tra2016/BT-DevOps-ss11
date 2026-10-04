@@ -1,0 +1,5 @@
+X-Forwarded-For: chuyển tiếp chuỗi IP qua các proxy, bổ sung IP client mà Nginx quan sát được.
+
+X-Forwarded-Proto: cho Backend biết request ban đầu dùng giao thức http hay https.
+
+Nếu không truyền X-Real-IP hoặc X-Forwarded-For, Gateway thường chỉ thấy IP nguồn của kết nối TCP là 127.0.0.1 vì Nginx và Gateway chạy trên cùng VPS. Chúng chỉ cung cấp thông tin IP trong HTTP header; Backend phải đọc và tin cậy các header này từ proxy đáng tin cậy

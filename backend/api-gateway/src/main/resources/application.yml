@@ -1,0 +1,21 @@
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=X-System-Name, Api-Gateway-System
+      routes:
+        - id: user-service-route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/doctors/**
+
+eureka:
+  client:
+    enabled: false
